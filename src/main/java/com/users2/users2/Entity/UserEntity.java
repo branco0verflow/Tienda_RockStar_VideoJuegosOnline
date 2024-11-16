@@ -1,6 +1,8 @@
 package com.users2.users2.Entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -10,15 +12,26 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id") // Especifica el nombre de la columna de clave foránea
-    private CountryEntity country;
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
+    private LocalDate fechaRegistro;
+
+    @Column
+    private boolean isPremium;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<VentaEntity> historialCompras;
+
+    @Column
+    private String numeroTarjeta; // Opcional, puede estar cifrado
 
     // Getters y Setters
 
@@ -46,19 +59,61 @@ public class UserEntity {
         this.password = password;
     }
 
-    public CountryEntity getCountry() {
-        return country;
+
+
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCountry(CountryEntity country) {
-        this.country = country;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public UserEntity(int id, String email, String password, CountryEntity country) {
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public boolean isPremium() {
+        return isPremium;
+    }
+
+    public void setPremium(boolean isPremium) {
+        this.isPremium = isPremium;
+    }
+
+    public List<VentaEntity> getHistorialCompras() {
+        return historialCompras;
+    }
+
+    public void setHistorialCompras(List<VentaEntity> historialCompras) {
+        this.historialCompras = historialCompras;
+    }
+
+    public String getNumeroTarjeta() {
+        return numeroTarjeta;
+    }
+
+    public void setNumeroTarjeta(String numeroTarjeta) {
+        this.numeroTarjeta = numeroTarjeta;
+    }
+
+    // Constructores
+
+    public UserEntity(int id, String email, String password, String nombre,
+                      LocalDate fechaRegistro, boolean isPremium, List<VentaEntity> historialCompras,
+                      String numeroTarjeta) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.country = country;
+        this.nombre = nombre;
+        this.fechaRegistro = fechaRegistro;
+        this.isPremium = isPremium;
+        this.historialCompras = historialCompras;
+        this.numeroTarjeta = numeroTarjeta;
     }
 
     public UserEntity() {

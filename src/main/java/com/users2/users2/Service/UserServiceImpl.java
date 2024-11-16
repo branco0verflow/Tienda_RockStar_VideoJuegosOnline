@@ -1,7 +1,7 @@
 package com.users2.users2.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,30 +11,64 @@ import com.users2.users2.Repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
 
-    public UserEntity save(UserEntity userEntity){
+    // Guardar o actualizar un usuario
+    @Override
+    public UserEntity save(UserEntity userEntity) {
         return userRepository.save(userEntity);
     }
-    public String delete(int id){
-        if(userRepository.existsById(id)){
+
+    // Eliminar un usuario por ID
+    @Override
+    public boolean delete(int id) {
+        if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
-            return "Usuario eliminado";
+            return true;
         }
-        return "No existe";
+        return false;
     }
-    public UserEntity getById(int id){
+
+    // Obtener un usuario por ID
+    @Override
+    public UserEntity getById(int id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
     }
-    public List<UserEntity> getAll(){
+
+    // Obtener todos los usuarios
+    @Override
+    public List<UserEntity> getAll() {
         return userRepository.findAll();
     }
-    public String login(UserEntity user){
-        if(userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword()).size()>0){
-            return "Se inició sesión con éxito";
-        }
-        return "Credenciales incorrectas";
+
+    // Login de usuario
+    @Override
+    public UserEntity login(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password)
+                .stream()
+                .findFirst()
+                .orElse(null); // Retorna el usuario si las credenciales coinciden
+    }
+
+    // Obtener usuarios por tipo (regular o premium)
+    @Override
+    public List<UserEntity> getByTipoUsuario(String tipoUsuario) {
+        return userRepository.findByTipoUsuario(tipoUsuario);
+    }
+
+    // Buscar un usuario por número de tarjeta
+    @Override
+    public UserEntity getByNumeroTarjeta(String numeroTarjeta) {
+        return userRepository.findByNumeroTarjeta(numeroTarjeta);
+    }
+
+    // Obtener usuarios registrados después de una fecha específica
+    @Override
+    public List<UserEntity> getByFechaRegistroAfter(LocalDate fecha) {
+        return userRepository.findByFechaRegistroAfter(fecha);
     }
 }
+
