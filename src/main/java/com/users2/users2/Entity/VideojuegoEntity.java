@@ -1,5 +1,6 @@
 package com.users2.users2.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class VideojuegoEntity {
     private String categoria; // Categoría como acción, aventura, deportes, etc.
 
     @ManyToMany(mappedBy = "videojuegos")
+    @JsonIgnore // Evita que se serialicen las ventas asociadas a los videojuegos
     private List<VentaEntity> ventas; // Ventas en las que se incluye este videojuego
 
     // Getters y Setters

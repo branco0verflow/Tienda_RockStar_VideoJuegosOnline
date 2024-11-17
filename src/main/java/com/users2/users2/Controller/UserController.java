@@ -47,21 +47,28 @@ public class UserController {
 
     // Actualizar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody Map<String, Object> requestData) {
+    public ResponseEntity<?> updateUser (@PathVariable int id, @RequestBody Map<String, Object> requestData) {
         UserEntity user = userService.getById(id);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
+
+        // Actualizar campos
         user.setEmail((String) requestData.get("email"));
         user.setPassword((String) requestData.get("password"));
         user.setNombre((String) requestData.get("nombre"));
 
-        // Asignar valor booleano a isPremium según el tipoUsuario
-        user.setPremium((Boolean) requestData.get("isPremium"));
-
+        // Manejar isPremium
+        if (requestData.containsKey("isPremium")) {
+            user.setPremium((Boolean) requestData.get("isPremium"));
+        } else {
+            String tipoUsuario = (String) requestData.get("tipoUsuario");
+            user.setPremium("premium".equalsIgnoreCase(tipoUsuario));
+        }
 
         user.setNumeroTarjeta((String) requestData.get("numeroTarjeta"));
 
+        // Guardar el usuario actualizado
         return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
     }
 

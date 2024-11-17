@@ -1,5 +1,6 @@
 package com.users2.users2.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -16,8 +17,10 @@ public class VentaEntity {
     private LocalDate fechaCompra;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false) // Relación con UserEntity
+    @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnore // Evita la serialización del usuario al convertir VentaEntity a JSON
     private UserEntity usuario;
+
 
     @ManyToMany
     @JoinTable(
