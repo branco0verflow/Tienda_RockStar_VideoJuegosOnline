@@ -22,7 +22,7 @@ public interface UserService {
     UserEntity login(String email, String password);
 
     // Obtener usuarios por tipo (regular o premium)
-    List<UserEntity> getByTipoUsuario(String tipoUsuario);
+    List<UserEntity> getByIsPremium(boolean tipoUsuario);
 
     // Buscar un usuario por número de tarjeta
     UserEntity getByNumeroTarjeta(String numeroTarjeta);

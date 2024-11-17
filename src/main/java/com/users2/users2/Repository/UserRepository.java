@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findByEmailAndPassword(String email, String password);
 
     // Buscar usuarios por tipo (Regular o Premium)
-    List<UserEntity> findByTipoUsuario(String tipoUsuario);
+    List<UserEntity> findByIsPremium(boolean isPremium);
 
     // Buscar un usuario por número de tarjeta (único)
     UserEntity findByNumeroTarjeta(String numeroTarjeta);

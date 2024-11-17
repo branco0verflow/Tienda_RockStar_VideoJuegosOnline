@@ -27,11 +27,17 @@ public class UserController {
         user.setEmail((String) requestData.get("email"));
         user.setPassword((String) requestData.get("password"));
         user.setNombre((String) requestData.get("nombre"));
+
+        // Asignar la fecha actual correctamente
         user.setFechaRegistro(LocalDate.now());
 
-        // Asignar valor booleano a isPremium según el tipoUsuario
-        String tipoUsuario = (String) requestData.get("tipoUsuario");
-        user.setPremium("premium".equalsIgnoreCase(tipoUsuario)); // true si es "premium", false si es "regular"
+        // Manejar isPremium o tipoUsuario
+        if (requestData.containsKey("isPremium")) {
+            user.setPremium((Boolean) requestData.get("isPremium"));
+        } else {
+            String tipoUsuario = (String) requestData.get("tipoUsuario");
+            user.setPremium("premium".equalsIgnoreCase(tipoUsuario));
+        }
 
         user.setNumeroTarjeta((String) requestData.get("numeroTarjeta"));
 
@@ -51,8 +57,8 @@ public class UserController {
         user.setNombre((String) requestData.get("nombre"));
 
         // Asignar valor booleano a isPremium según el tipoUsuario
-        String tipoUsuario = (String) requestData.get("tipoUsuario");
-        user.setPremium("premium".equalsIgnoreCase(tipoUsuario)); // true si es "premium", false si es "regular"
+        user.setPremium((Boolean) requestData.get("isPremium"));
+
 
         user.setNumeroTarjeta((String) requestData.get("numeroTarjeta"));
 
@@ -103,8 +109,8 @@ public class UserController {
 
     // Obtener usuarios por tipo (regular o premium)
     @GetMapping("/tipo/{tipoUsuario}")
-    public ResponseEntity<?> getUsersByType(@PathVariable String tipoUsuario) {
-        List<UserEntity> users = userService.getByTipoUsuario(tipoUsuario);
+    public ResponseEntity<?> getUsersByType(@PathVariable boolean tipoUsuario) {
+        List<UserEntity> users = userService.getByIsPremium(tipoUsuario);
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 

@@ -34,8 +34,7 @@ public class UserServiceImpl implements UserService {
     // Obtener un usuario por ID
     @Override
     public UserEntity getById(int id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
     }
 
     // Obtener todos los usuarios
@@ -53,11 +52,12 @@ public class UserServiceImpl implements UserService {
                 .orElse(null); // Retorna el usuario si las credenciales coinciden
     }
 
-    // Obtener usuarios por tipo (regular o premium)
     @Override
-    public List<UserEntity> getByTipoUsuario(String tipoUsuario) {
-        return userRepository.findByTipoUsuario(tipoUsuario);
+    public List<UserEntity> getByIsPremium(boolean tipoUsuario) {
+        return List.of();
     }
+
+
 
     // Buscar un usuario por número de tarjeta
     @Override
