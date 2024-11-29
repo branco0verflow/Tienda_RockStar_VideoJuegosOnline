@@ -1,5 +1,6 @@
 package com.users2.users2.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,10 +29,10 @@ public class UserEntity {
     private boolean isPremium;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<VentaEntity> historialCompras;
 
-    @Column
-    private String numeroTarjeta; // Opcional, puede estar cifrado
+    // Eliminamos la propiedad numeroTarjeta
 
     // Getters y Setters
 
@@ -58,8 +59,6 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
     public String getNombre() {
         return nombre;
@@ -93,19 +92,10 @@ public class UserEntity {
         this.historialCompras = historialCompras;
     }
 
-    public String getNumeroTarjeta() {
-        return numeroTarjeta;
-    }
-
-    public void setNumeroTarjeta(String numeroTarjeta) {
-        this.numeroTarjeta = numeroTarjeta;
-    }
-
     // Constructores
 
     public UserEntity(int id, String email, String password, String nombre,
-                      LocalDate fechaRegistro, boolean isPremium, List<VentaEntity> historialCompras,
-                      String numeroTarjeta) {
+                      LocalDate fechaRegistro, boolean isPremium, List<VentaEntity> historialCompras) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -113,7 +103,6 @@ public class UserEntity {
         this.fechaRegistro = fechaRegistro;
         this.isPremium = isPremium;
         this.historialCompras = historialCompras;
-        this.numeroTarjeta = numeroTarjeta;
     }
 
     public UserEntity() {

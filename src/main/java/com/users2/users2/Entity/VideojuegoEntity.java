@@ -33,12 +33,21 @@ public class VideojuegoEntity {
     @Column(nullable = false)
     private String categoria; // Categoría como acción, aventura, deportes, etc.
 
-    @ManyToMany(mappedBy = "videojuegos")
-    @JsonIgnore // Evita que se serialicen las ventas asociadas a los videojuegos
-    private List<VentaEntity> ventas; // Ventas en las que se incluye este videojuego
+    // Relación con la tabla intermedia VentaVideojuegoEntity
+    @OneToMany(mappedBy = "videojuego", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<VentaVideojuegoEntity> ventasVideojuegos; // Relación con las ventas que contienen este videojuego
+
+    // Método para reducir la cantidad de stock
+    public void reducirCantidad(int cantidadVendida) {
+        if (this.cantidad >= cantidadVendida) {
+            this.cantidad -= cantidadVendida;
+        } else {
+            throw new IllegalArgumentException("Stock insuficiente");
+        }
+    }
 
     // Getters y Setters
-
     public int getId() {
         return id;
     }
@@ -103,39 +112,11 @@ public class VideojuegoEntity {
         this.categoria = categoria;
     }
 
-    public List<VentaEntity> getVentas() {
-        return ventas;
+    public List<VentaVideojuegoEntity> getVentasVideojuegos() {
+        return ventasVideojuegos;
     }
 
-    public void setVentas(List<VentaEntity> ventas) {
-        this.ventas = ventas;
+    public void setVentasVideojuegos(List<VentaVideojuegoEntity> ventasVideojuegos) {
+        this.ventasVideojuegos = ventasVideojuegos;
     }
-
-    // Constructores
-
-    public VideojuegoEntity(int id, String codigo, String nombre, String descripcion, double precio,
-                            String imagen, int cantidad, String categoria, List<VentaEntity> ventas) {
-        this.id = id;
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.imagen = imagen;
-        this.cantidad = cantidad;
-        this.categoria = categoria;
-        this.ventas = ventas;
-    }
-
-    public VideojuegoEntity() {
-    }
-
-    public void reducirCantidad(int cantidadVendida) {
-        if (this.cantidad >= cantidadVendida) {
-            this.cantidad -= cantidadVendida;
-        } else {
-            throw new IllegalArgumentException("Stock insuficiente");
-        }
-    }
-
-
 }

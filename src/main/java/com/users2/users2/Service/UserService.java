@@ -22,10 +22,8 @@ public interface UserService {
     UserEntity login(String email, String password);
 
     // Obtener usuarios por tipo (regular o premium)
-    List<UserEntity> getByIsPremium(boolean tipoUsuario);
+    List<UserEntity> getByIsPremium(boolean isPremium);
 
-    // Buscar un usuario por número de tarjeta
-    UserEntity getByNumeroTarjeta(String numeroTarjeta);
 
     // Obtener usuarios registrados después de una fecha específica
     List<UserEntity> getByFechaRegistroAfter(LocalDate fecha);

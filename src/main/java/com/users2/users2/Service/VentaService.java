@@ -1,5 +1,7 @@
 package com.users2.users2.Service;
 
+import com.users2.users2.DTO.CompraPorFechaDTO;
+import com.users2.users2.DTO.CompraPorUsuarioDTO;
 import com.users2.users2.Entity.UserEntity;
 import com.users2.users2.Entity.VentaEntity;
 import com.users2.users2.Entity.VideojuegoEntity;
@@ -22,7 +24,7 @@ public interface VentaService {
     List<VentaEntity> getAll();
 
     // Obtener ventas realizadas por un usuario específico
-    List<VentaEntity> getVentasByUsuarioId(int usuarioId);
+    List<CompraPorUsuarioDTO> getVentasByUsuarioId(int usuarioId);
 
     // Obtener ventas realizadas después de una fecha específica
     List<VentaEntity> getVentasAfterDate(LocalDate fecha);
@@ -32,5 +34,7 @@ public interface VentaService {
 
     // Obtener videojuegos por una lista de IDs (usado al crear ventas)
     List<VideojuegoEntity> getVideojuegosByIds(List<Integer> videojuegosIds);
-}
 
+    List<CompraPorFechaDTO> getVentasByFechaCompra(LocalDate fechaCompra);
+
+}

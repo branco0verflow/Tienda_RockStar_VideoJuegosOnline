@@ -79,6 +79,11 @@ public class VideoJuegoServiceImpl implements VideoJuegoService {
         return videojuegoRepository.findByNombreContaining(texto);
     }
 
+    @Override
+    public List<VideojuegoEntity> getVideojuegosConStockMenorA(int cantidad) {
+        return videojuegoRepository.findByCantidadLessThan(cantidad);
+    }
+
 
 }
 

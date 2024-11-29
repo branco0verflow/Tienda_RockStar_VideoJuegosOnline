@@ -14,8 +14,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     // Buscar usuarios por tipo (Regular o Premium)
     List<UserEntity> findByIsPremium(boolean isPremium);
 
-    // Buscar un usuario por número de tarjeta (único)
-    UserEntity findByNumeroTarjeta(String numeroTarjeta);
 
     // Buscar todos los usuarios registrados después de una fecha específica
     List<UserEntity> findByFechaRegistroAfter(LocalDate fecha);

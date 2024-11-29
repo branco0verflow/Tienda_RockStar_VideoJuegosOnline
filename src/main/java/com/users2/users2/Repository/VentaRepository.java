@@ -20,5 +20,7 @@ public interface VentaRepository extends JpaRepository<VentaEntity, Integer> {
     // Obtener el total de ventas realizadas por un usuario en una fecha específica
     @Query("SELECT v FROM VentaEntity v WHERE v.usuario.id = :usuarioId AND v.fechaCompra = :fecha")
     List<VentaEntity> findVentasByUsuarioIdAndFecha(int usuarioId, LocalDate fecha);
+
+    List<VentaEntity> findByFechaCompra(LocalDate fechaCompra);
 }
 

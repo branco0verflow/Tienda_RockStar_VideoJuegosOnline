@@ -38,9 +38,6 @@ public class UserController {
             String tipoUsuario = (String) requestData.get("tipoUsuario");
             user.setPremium("premium".equalsIgnoreCase(tipoUsuario));
         }
-
-        user.setNumeroTarjeta((String) requestData.get("numeroTarjeta"));
-
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
     }
 
@@ -65,8 +62,6 @@ public class UserController {
             String tipoUsuario = (String) requestData.get("tipoUsuario");
             user.setPremium("premium".equalsIgnoreCase(tipoUsuario));
         }
-
-        user.setNumeroTarjeta((String) requestData.get("numeroTarjeta"));
 
         // Guardar el usuario actualizado
         return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
@@ -115,20 +110,13 @@ public class UserController {
     }
 
     // Obtener usuarios por tipo (regular o premium)
-    @GetMapping("/tipo/{tipoUsuario}")
-    public ResponseEntity<?> getUsersByType(@PathVariable boolean tipoUsuario) {
-        List<UserEntity> users = userService.getByIsPremium(tipoUsuario);
+    @GetMapping("/tipo/{isPremium}")
+    public ResponseEntity<?> getUsersByType(@PathVariable boolean isPremium) {
+        List<UserEntity> users = userService.getByIsPremium(isPremium);
+        if (users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay usuarios de este tipo.");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
-    // Buscar usuario por número de tarjeta
-    @GetMapping("/tarjeta/{numeroTarjeta}")
-    public ResponseEntity<?> getUserByCard(@PathVariable String numeroTarjeta) {
-        UserEntity user = userService.getByNumeroTarjeta(numeroTarjeta);
-        if (user != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(user);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario con número de tarjeta no encontrado");
-        }
-    }
 }

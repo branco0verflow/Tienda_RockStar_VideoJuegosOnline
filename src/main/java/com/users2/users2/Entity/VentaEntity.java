@@ -18,23 +18,34 @@ public class VentaEntity {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    @JsonIgnore // Evita la serialización del usuario al convertir VentaEntity a JSON
+    @JsonIgnore
     private UserEntity usuario;
 
+    // Relación con la tabla intermedia VentaVideojuegoEntity
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<VentaVideojuegoEntity> ventaVideojuegos; // Relación con los videojuegos en la venta
 
-    @ManyToMany
-    @JoinTable(
-            name = "venta_videojuegos",
-            joinColumns = @JoinColumn(name = "venta_id"),
-            inverseJoinColumns = @JoinColumn(name = "videojuego_id")
-    ) // Relación con VideojuegoEntity (lista de videojuegos en esta venta)
-    private List<VideojuegoEntity> videojuegos;
 
     @Column(nullable = false)
     private double total;
 
-    // Getters y Setters
+    public void calcularTotal() {
+        // Obtener el total inicial sumando todos los precios de los videojuegos
+        double totalBase = ventaVideojuegos.stream()
+                .mapToDouble(vv -> vv.getVideojuego().getPrecio() * vv.getCantidad())
+                .sum();
 
+        // Aplicar un 20% de descuento si el usuario es premium
+        if (usuario.isPremium()) {
+            this.total = totalBase * 0.8;  // Aplica el 20% de descuento
+        } else {
+            this.total = totalBase;  // Sin descuento si no es premium
+        }
+    }
+
+
+    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -59,12 +70,12 @@ public class VentaEntity {
         this.usuario = usuario;
     }
 
-    public List<VideojuegoEntity> getVideojuegos() {
-        return videojuegos;
+    public List<VentaVideojuegoEntity> getVentaVideojuegos() {
+        return ventaVideojuegos;
     }
 
-    public void setVideojuegos(List<VideojuegoEntity> videojuegos) {
-        this.videojuegos = videojuegos;
+    public void setVentaVideojuegos(List<VentaVideojuegoEntity> ventaVideojuegos) {
+        this.ventaVideojuegos = ventaVideojuegos;
     }
 
     public double getTotal() {
@@ -74,18 +85,4 @@ public class VentaEntity {
     public void setTotal(double total) {
         this.total = total;
     }
-
-    // Constructores
-
-    public VentaEntity(int id, LocalDate fechaCompra, UserEntity usuario, List<VideojuegoEntity> videojuegos, double total) {
-        this.id = id;
-        this.fechaCompra = fechaCompra;
-        this.usuario = usuario;
-        this.videojuegos = videojuegos;
-        this.total = total;
-    }
-
-    public VentaEntity() {
-    }
 }
-

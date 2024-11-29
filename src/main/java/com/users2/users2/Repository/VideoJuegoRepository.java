@@ -19,8 +19,7 @@ public interface VideoJuegoRepository extends JpaRepository<VideojuegoEntity, In
     // Filtrar videojuegos por rango de precios
     List<VideojuegoEntity> findByPrecioBetween(double minPrecio, double maxPrecio);
 
-    // Filtrar videojuegos por stock (mayor o igual a cierta cantidad)
-    List<VideojuegoEntity> findByCantidadGreaterThanEqual(int cantidad);
+    List<VideojuegoEntity> findByCantidadLessThan(int cantidad);
 
     // Buscar videojuegos con nombre que contenga un texto específico (parcial)
     List<VideojuegoEntity> findByNombreContaining(String texto);

@@ -3,28 +3,35 @@ package com.users2.users2.Entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "venta_detalle")
-public class VentaDetalleEntity {
+@Table(name = "venta_videojuego")
+public class VentaVideojuegoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id")
+    private int id;  // Clave primaria única
 
     @ManyToOne
     @JoinColumn(name = "venta_id", nullable = false)
-    private VentaEntity venta;
+    private VentaEntity venta;  // Relación con la venta
 
     @ManyToOne
     @JoinColumn(name = "videojuego_id", nullable = false)
-    private VideojuegoEntity videojuego;
+    private VideojuegoEntity videojuego;  // Relación con el videojuego
 
-    @Column(nullable = false)
-    private int cantidad;
+    @Column(name = "cantidad", nullable = false)
+    private int cantidad;  // Cantidad del videojuego en la venta
 
-    @Column(nullable = false)
-    private double precioTotal;
+    // Constructores
+    public VentaVideojuegoEntity() {}
 
-    // Getters y Setters
+    public VentaVideojuegoEntity(VentaEntity venta, VideojuegoEntity videojuego, int cantidad) {
+        this.venta = venta;
+        this.videojuego = videojuego;
+        this.cantidad = cantidad;
+    }
+
+    // Getters y setters
     public int getId() {
         return id;
     }
@@ -56,13 +63,4 @@ public class VentaDetalleEntity {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-
-    public double getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(double precioTotal) {
-        this.precioTotal = precioTotal;
-    }
 }
-

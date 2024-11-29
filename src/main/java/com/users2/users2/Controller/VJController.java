@@ -1,5 +1,6 @@
 package com.users2.users2.Controller;
 import com.users2.users2.Entity.VideojuegoEntity;
+import com.users2.users2.Repository.VideoJuegoRepository;
 import com.users2.users2.Service.VideoJuegoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,10 @@ public class VJController {
 
     @Autowired
     private VideoJuegoService videojuegoService;
+
+    @Autowired
+    private VideoJuegoRepository videojuegoRepository;
+
 
     // Agregar un nuevo videojuego
     @PostMapping
@@ -83,4 +88,20 @@ public class VJController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @GetMapping("/stock/{cantidad}")
+    public ResponseEntity<?> getVideojuegosPorStock(@PathVariable int cantidad) {
+        try {
+            List<VideojuegoEntity> videojuegos = videojuegoService.getVideojuegosConStockMenorA(cantidad);
+            if (videojuegos.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron videojuegos con stock menor a " + cantidad);
+            }
+            return ResponseEntity.ok(videojuegos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al obtener los videojuegos: " + e.getMessage());
+        }
+    }
+
+
+
 }

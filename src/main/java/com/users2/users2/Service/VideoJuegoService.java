@@ -33,6 +33,11 @@ public interface VideoJuegoService {
 
         // Para buscar un VJ por nombre
         List<VideojuegoEntity> buscarPorNombre(String texto);
+
+        // Listar videojuegos con stock menor a una cantidad determinada
+        List<VideojuegoEntity> getVideojuegosConStockMenorA(int cantidad);
+
+
 }
 
 

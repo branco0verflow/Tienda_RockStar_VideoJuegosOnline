@@ -53,17 +53,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getByIsPremium(boolean tipoUsuario) {
-        return List.of();
+    public List<UserEntity> getByIsPremium(boolean isPremium) {
+        return userRepository.findByIsPremium(isPremium);
     }
 
-
-
-    // Buscar un usuario por número de tarjeta
-    @Override
-    public UserEntity getByNumeroTarjeta(String numeroTarjeta) {
-        return userRepository.findByNumeroTarjeta(numeroTarjeta);
-    }
 
     // Obtener usuarios registrados después de una fecha específica
     @Override
